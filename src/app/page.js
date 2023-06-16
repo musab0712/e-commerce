@@ -1,7 +1,13 @@
-import Image from 'next/image'
+import NavBar from "@/redux/features/navbar/NavBar";
+import Product from "@/redux/features/product-list/ProductList";
+
 
 export default function Home() {
   return (
-    <div>Home</div>
-  )
+    <div>
+      <NavBar>
+        <Product/>
+      </NavBar>
+    </div>
+  );
 }

@@ -1,9 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{html,js}',
+    './components/**/*.{html,js}',
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{html,js}',
+    './src/**/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -14,5 +19,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/aspect-ratio'),require('@tailwindcss/forms'),],
 }
