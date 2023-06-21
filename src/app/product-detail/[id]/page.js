@@ -1,3 +1,4 @@
+import { Protected } from "@/redux/features/auth/components/Protected";
 import NavBar from "@/redux/features/navbar/NavBar";
 import ProductDetail from "@/redux/features/product-list/components/ProductDetail";
 
@@ -5,7 +6,9 @@ export default function ProductDetailPage() {
   return (
     <>
       <NavBar>
-        <ProductDetail />
+        <Protected>
+          <ProductDetail />
+        </Protected>
       </NavBar>
     </>
   );
