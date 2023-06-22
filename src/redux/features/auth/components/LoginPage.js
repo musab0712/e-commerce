@@ -3,8 +3,11 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { checkUserAsync, selectError, selectLoggedInUser } from "../authSlice";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const error = useSelector(selectError);
   const user = useSelector(selectLoggedInUser);
@@ -14,6 +17,15 @@ export default function LoginPage() {
     watch,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (user == null) {
+      router.replace("/login");
+    } else {
+      router.replace("/");
+    }
+  });
+
   return (
     <>
       {/* {user && <Link href="/" replace={true}></Link>} */}

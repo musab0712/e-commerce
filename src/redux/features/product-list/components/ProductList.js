@@ -21,6 +21,8 @@ import {
 } from "@heroicons/react/20/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
+import { selectLoggedInUser } from "../../auth/authSlice";
+import { useRouter } from "next/navigation";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -198,7 +200,9 @@ function classNames(...classes) {
 }
 
 export default function Product() {
-  // const count = useSelector(selectCount);
+  const router = useRouter();
+  const user = useSelector(selectLoggedInUser);
+  console.log(user);
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const totalItems = useSelector(selectTotalItems);
@@ -207,6 +211,14 @@ export default function Product() {
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    if (user == null) {
+      router.replace("/login");
+    } else {
+      router.replace("/");
+    }
+  });
 
   const handleFilter = (e, section, option) => {
     console.log(e.target.checked);

@@ -6,9 +6,7 @@ export default function ProductDetailPage() {
   return (
     <>
       <NavBar>
-        <Protected>
-          <ProductDetail />
-        </Protected>
+        <ProductDetail />
       </NavBar>
     </>
   );
