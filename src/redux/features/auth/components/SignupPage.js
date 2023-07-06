@@ -35,7 +35,7 @@ export default function SignupPage() {
             noValidate
             onSubmit={handleSubmit((data) => {
               dispatch(
-                createUserAsync({ email: data.email, password: data.password })
+                createUserAsync({ email: data.email, password: data.password, addresses:[] })
               );
               console.log(data);
             })}

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectItems } from "./cartSlice";
+import { deleteItemFromCartAsync, selectItems, updateCartAsync } from "./cartSlice";
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -15,6 +15,14 @@ export default function Cart() {
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
 
+  const handleQuantity = (e, item) => {
+    dispatch(updateCartAsync({...item, quantity: +e.target.value}));
+  };
+
+  const handleRemove =(e, itemId)=>{
+    dispatch(deleteItemFromCartAsync(itemId))
+  }
+
   return (
     <>
       <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8 py-2">
@@ -23,12 +31,12 @@ export default function Cart() {
         </h1>
         <div className="flow-root">
           <ul role="list" className="-my-6 divide-y divide-gray-200">
-            {items.map((product) => (
-              <li key={product.id} className="flex py-6">
+            {items.map((item) => (
+              <li key={item.id} className="flex py-6">
                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                   <img
-                    src={product.thumbnail}
-                    alt={product.thumbnail}
+                    src={item.thumbnail}
+                    alt={item.title}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
@@ -37,12 +45,12 @@ export default function Cart() {
                   <div>
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <h3>
-                        <a href={product.href}>{product.title}</a>
+                        <a href={item.href}>{item.title}</a>
                       </h3>
-                      <p className="ml-4">${product.price}</p>
+                      <p className="ml-4">${item.price}</p>
                     </div>
                     <p className="mt-1 text-sm text-gray-500">
-                      {product.brand}
+                      {item.brand}
                     </p>
                   </div>
                   <div className="flex flex-1 items-end justify-between text-sm">
@@ -53,14 +61,18 @@ export default function Cart() {
                       >
                         Qty
                       </label>
-                      <select className="py-0">
+                      <select onChange={(e)=>handleQuantity(e,item)} className="py-0">
                         <option value="1">1</option>
                         <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
                       </select>
                     </div>
 
                     <div className="flex">
                       <button
+                        onChange={e=>handleRemove(e,item.id)}
                         type="button"
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
