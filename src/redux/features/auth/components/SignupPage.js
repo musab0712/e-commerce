@@ -3,8 +3,10 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { selectLoggedInUser, createUserAsync } from "../authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser);
   const {
@@ -38,6 +40,7 @@ export default function SignupPage() {
                 createUserAsync({ email: data.email, password: data.password, addresses:[] })
               );
               console.log(data);
+              router.push("/");
             })}
           >
             <div>

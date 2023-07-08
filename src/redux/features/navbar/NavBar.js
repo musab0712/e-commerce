@@ -22,9 +22,9 @@ const navigation = [
   { name: "Projects", href: "#", current: false },
 ];
 const userNavigation = [
-  { name: "Your Profile", link: "/" },
-  { name: "Settings", link: "/" },
-  { name: "Sign out", link: "/login" },
+  { name: "Your Profile", href: "/profile" },
+  { name: "My Orders", href: "/myorders" },
+  { name: "Sign out", href: "/login" },
 ];
 
 function classNames(...classes) {
@@ -115,7 +115,7 @@ export default function NavBar({ children }) {
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
-                                  <a
+                                  <Link
                                     href={item.href}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
@@ -123,7 +123,7 @@ export default function NavBar({ children }) {
                                     )}
                                   >
                                     {item.name}
-                                  </a>
+                                  </Link>
                                 )}
                               </Menu.Item>
                             ))}

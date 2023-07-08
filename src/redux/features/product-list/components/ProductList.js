@@ -214,9 +214,9 @@ export default function Product() {
 
   useEffect(() => {
     if (user == null) {
-      router.replace("/login");
+      router.push("/login");
     } else {
-      router.replace("/");
+      router.push("/");
     }
   });
 
