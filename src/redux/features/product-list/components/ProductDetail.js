@@ -7,6 +7,7 @@ import { fetchProductByIdAsync, selectProductById } from "../productSlice";
 import { useParams } from "next/navigation";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { addToCartAsync } from "../../cartList/cartSlice";
+import Link from "next/link";
 
 // TODO: In server data we will add colors, sizes , highlights. to each product
 
@@ -295,12 +296,12 @@ export default function ProductDetail() {
                   </RadioGroup>
                 </div>
 
-                <button
-                  onClick={handleCart}
+                <button          
                   type="submit"
                   className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                  Add to Cart
+                  <Link href="/">Add to Cart</Link>
+                  
                 </button>
               </form>
             </div>

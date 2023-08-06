@@ -23,6 +23,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -200,6 +201,8 @@ function classNames(...classes) {
 }
 
 export default function Product() {
+  const session = useSession();
+  console.log(session);
   const router = useRouter();
   const user = useSelector(selectLoggedInUser);
   console.log(user);
@@ -211,14 +214,6 @@ export default function Product() {
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    if (user == null) {
-      router.push("/login");
-    } else {
-      router.push("/");
-    }
-  });
 
   const handleFilter = (e, section, option) => {
     console.log(e.target.checked);
@@ -245,7 +240,6 @@ export default function Product() {
     console.log({ sort });
     setSort(sort);
   };
-
   const ITEMS_PER_PAGE = 12;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const handlePage = (page) => {
@@ -260,6 +254,14 @@ export default function Product() {
   useEffect(() => {
     setPage(1);
   }, [totalItems, sort]);
+
+  if (session.status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (session.status === "unauthenticated") {
+    router?.push("/login");
+  }
 
   return (
     <div>

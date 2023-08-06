@@ -4,17 +4,39 @@ import { useForm } from "react-hook-form";
 import { selectLoggedInUser, createUserAsync } from "../authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function SignupPage() {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+    username: "",
+  });
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
+
+  const onSignup = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("api/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      const resData = await res.json();
+      console.log(resData);
+      res.status === 201 && router.push("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -32,17 +54,33 @@ export default function SignupPage() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form
-            className="space-y-6"
-            noValidate
-            onSubmit={handleSubmit((data) => {
-              dispatch(
-                createUserAsync({ email: data.email, password: data.password, addresses:[] })
-              );
-              console.log(data);
-              router.push("/");
-            })}
-          >
+          <form className="space-y-6" onSubmit={onSignup}>
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Full Name
+              </label>
+              <div className="mt-2">
+                <input
+                  id="username"
+                  {...register("username", {
+                    required: "username is required",
+                  })}
+                  type="username"
+                  value={user.username}
+                  onChange={(e) =>
+                    setUser({ ...user, username: e.target.value })
+                  }
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                {errors.name && (
+                  <p className="text-red-500">{errors.name.message}</p>
+                )}
+              </div>
+            </div>
+
             <div>
               <label
                 htmlFor="email"
@@ -61,6 +99,8 @@ export default function SignupPage() {
                     },
                   })}
                   type="email"
+                  value={user.email}
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {errors.email && (
@@ -92,6 +132,10 @@ export default function SignupPage() {
                     },
                   })}
                   type="password"
+                  value={user.password}
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {errors.password && (
